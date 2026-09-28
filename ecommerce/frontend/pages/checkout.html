@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finalizar Pedido | Lumina Lingerie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+  
+
+  <style>
+    .checkout-container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 36px;
+    }
+
+    .checkout-section {
+      background: var(--bg-white);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .checkout-section h2 {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      margin-bottom: 18px;
+      color: var(--primary-dark);
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .form-group input, .form-group select {
+      padding: 10px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+      border-color: var(--primary);
+    }
+
+    /* Métodos de Pagamento */
+    .payment-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .payment-option-card {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s;
+    }
+
+    .payment-option-card:hover, .payment-option-card.active {
+      border-color: var(--primary);
+      background-color: rgba(138, 59, 80, 0.03);
+    }
+
+    /* Resumo do Pedido */
+    .order-summary {
+      background: var(--bg-white);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 24px;
+      position: sticky;
+      top: 90px;
+      height: fit-content;
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+    }
+
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 2px dashed var(--border-color);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .badge-pix {
+      background: #27ae60;
+      color: #fff;
+      font-size: 0.72rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 820px) {
+      .checkout-container {
+        grid-template-columns: 1fr;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-container">
+      <a href="../index.html" class="brand-logo">LUMINA</a>
+      <a href="../index.html" style="font-size: 0.85rem; color: var(--text-muted); text-decoration: none;">&larr; Voltar à loja</a>
+    </div>
+  </header>
+
+  <main class="checkout-container">
+    <!-- Coluna de Formulários -->
+    <div>
+      <section class="checkout-section">
+        <h2>1. Identificação</h2>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" placeholder="seu.email@exemplo.com" required>
+          </div>
+          <div class="form-group">
+            <label for="nome">Nome Completo</label>
+            <input type="text" id="nome" placeholder="Maria da Silva" required>
+          </div>
+          <div class="form-group">
+            <label for="telefone">WhatsApp / Telemóvel</label>
+            <input type="tel" id="telefone" placeholder="(11) 99999-9999" required>
+          </div>
+        </div>
+      </section>
+
+      <section class="checkout-section">
+        <h2>2. Entrega Discreta</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="cep">CEP</label>
+            <input type="text" id="cep" placeholder="00000-000" maxlength="9">
+          </div>
+          <div class="form-group">
+            <label for="cidade">Cidade / UF</label>
+            <input type="text" id="cidade" placeholder="São Paulo / SP">
+          </div>
+          <div class="form-group full">
+            <label for="endereco">Endereço (Rua/Avenida, Número e Complemento)</label>
+            <input type="text" id="endereco" placeholder="Rua das Flores, 123 - Apto 42">
+          </div>
+          <div class="form-group">
+            <label for="bairro">Bairro</label>
+            <input type="text" id="bairro" placeholder="Centro">
+          </div>
+        </div>
+      </section>
+
+      <section class="checkout-section">
+        <h2>3. Forma de Pagamento</h2>
+        <div class="payment-options">
+          <label class="payment-option-card active">
+            <input type="radio" name="paymentMethod" value="pix" checked>
+            <div>
+              <strong>Pix <span class="badge-pix">5% OFF</span></strong>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Aprovação imediata e envio prioritário</div>
+            </div>
+          </label>
+
+          <label class="payment-option-card">
+            <input type="radio" name="paymentMethod" value="cartao">
+            <div>
+              <strong>Cartão de Crédito</strong>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Em até 6x sem juros (fatura com nome discreto)</div>
+            </div>
+          </label>
+        </div>
+      </section>
+    </div>
+
+    <!-- Resumo do Pedido -->
+    <aside>
+      <div class="order-summary">
+        <h2 style="font-family: var(--font-serif); font-size: 1.5rem; margin-bottom: 16px;">Resumo</h2>
+        
+        <div class="summary-line">
+          <span>Subtotal</span>
+          <span id="checkoutSubtotal">R$ 229,80</span>
+        </div>
+        <div class="summary-line">
+          <span>Frete (Correios)</span>
+          <span id="checkoutFrete">R$ 14,90</span>
+        </div>
+        <div class="summary-line" style="color: #27ae60;">
+          <span>Desconto Pix</span>
+          <span id="checkoutDesconto">- R$ 11,49</span>
+        </div>
+
+        <div class="summary-total">
+          <span>Total</span>
+          <span id="checkoutTotal">R$ 233,21</span>
+        </div>
+
+        <button class="btn-checkout" style="margin-top: 20px;" onclick="processOrder()">
+          Confirmar e Pagar
+        </button>
+
+        <div class="discreet-notice" style="margin-top: 16px;">
+          🔒 <strong>Garantia de Sigilo:</strong> A embalagem externa não contém referências a moda íntima ou lingerie.
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <script type="module">
+  import { CONFIG } from '../assets/js/config.js';
+
+  // 1. Função para obter o carrinho atualizado
+  function getCart() {
+    const savedCart = localStorage.getItem("lumina_cart");
+    try {
+      return savedCart ? JSON.parse(savedCart) : [];
+    } catch (e) {
+      console.error("Erro ao converter carrinho:", e);
+      return [];
+    }
+  }
+
+  // 2. Atualiza a coluna de resumo
+  function updateSummary() {
+    const items = getCart();
+    const subtotal = items.reduce((acc, item) => acc + (item.price * (item.qty || item.quantity || 1)), 0);
+    const shipping = subtotal >= CONFIG.FREE_SHIPPING_THRESHOLD || subtotal === 0 ? 0 : 14.90;
+    
+    const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value || 'pix';
+    const discount = paymentMethod === 'pix' ? (subtotal * 0.05) : 0;
+    const total = subtotal + shipping - discount;
+
+    const elSubtotal = document.getElementById("checkoutSubtotal");
+    const elFrete = document.getElementById("checkoutFrete");
+    const elDesconto = document.getElementById("checkoutDesconto");
+    const elTotal = document.getElementById("checkoutTotal");
+
+    if (elSubtotal) elSubtotal.textContent = subtotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    if (elFrete) elFrete.textContent = shipping === 0 ? "GRÁTIS" : shipping.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    if (elDesconto) elDesconto.textContent = "- " + discount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    if (elTotal) elTotal.textContent = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
+  // 3. Processamento do pedido
+  async function processOrder(e) {
+    if (e) e.preventDefault();
+
+    const cartItems = getCart();
+
+    if (!cartItems || cartItems.length === 0) {
+      alert("O seu carrinho está vazio!");
+      return;
+    }
+
+    const nameInput = document.getElementById("nome") || document.querySelector('input[placeholder*="Nome"], input[name="nome"]');
+    const emailInput = document.getElementById("email") || document.querySelector('input[type="email"]');
+    const cepInput = document.getElementById("cep") || document.querySelector('input[placeholder*="CEP"], input[name="cep"]');
+
+    const name = nameInput ? nameInput.value.trim() : "";
+    const email = emailInput ? emailInput.value.trim() : "";
+    const cep = cepInput ? cepInput.value.trim() : "";
+    const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value || 'pix';
+
+    if (!name || !email || !cep) {
+      alert("Por favor, preencha nome, e-mail e CEP para prosseguir.");
+      return;
+    }
+
+    const payload = {
+      customerName: name,
+      customerEmail: email,
+      postalCode: cep,
+      paymentMethod: paymentMethod,
+      items: cartItems.map(item => ({
+        productId: item.id || 1,
+        title: item.title || item.name || "Produto",
+        size: item.size || "M",
+        quantity: item.qty || item.quantity || 1,
+        price: item.price
+      }))
+    };
+
+    const submitBtn = document.querySelector(".btn-checkout");
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "A processar pedido...";
+    }
+
+    try {
+      const response = await fetch(`${CONFIG.API_BASE_URL}/checkout/process`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erro na resposta do servidor: ${response.status}`);
+      }
+
+      const data = await response.json();
+      alert(`Pedido #${data.orderCode} gravado com sucesso!\nValor Total: R$ ${data.totalAmount.toFixed(2)}`);
+      
+      localStorage.removeItem("lumina_cart");
+      window.location.href = "../index.html";
+    } catch (err) {
+      console.error("Falha ao comunicar com a API:", err);
+      alert("Não foi possível conectar ao servidor backend. Verifique se o Spring Boot está em execução.");
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Confirmar e Pagar";
+      }
+    }
+  }
+
+  // Inicialização e vinculação de eventos
+  document.addEventListener("DOMContentLoaded", () => {
+    updateSummary();
+
+    document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+      radio.addEventListener('change', updateSummary);
+    });
+
+    const submitBtn = document.querySelector(".btn-checkout");
+    if (submitBtn) {
+      submitBtn.onclick = processOrder;
+    }
+  });
+</script>
+</body>
+</html>

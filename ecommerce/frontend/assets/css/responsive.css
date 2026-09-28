@@ -1,0 +1,113 @@
+/* Dispositivos móveis e ecrãs pequenos (até 768px) */
+@media (max-width: 768px) {
+  .top-bar {
+    font-size: 0.72rem;
+    padding: 6px 10px;
+  }
+
+  .nav-container {
+    padding: 14px 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .brand-logo {
+    font-size: 1.8rem;
+  }
+
+  .nav-actions {
+    gap: 8px;
+  }
+
+  .btn-cart {
+    padding: 6px 12px;
+    font-size: 0.82rem;
+  }
+
+  .hero {
+    padding: 40px 16px;
+  }
+
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero p {
+    font-size: 0.95rem;
+  }
+
+  .privacy-badge {
+    font-size: 0.76rem;
+    padding: 6px 10px;
+  }
+
+  .main-container {
+    margin: 24px auto;
+    padding: 0 16px;
+  }
+
+  .filter-bar {
+    gap: 8px;
+    margin-bottom: 24px;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding-bottom: 6px;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .filter-btn {
+    padding: 6px 16px;
+    font-size: 0.82rem;
+    flex-shrink: 0;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 14px;
+  }
+
+  .card-media {
+    height: 210px;
+  }
+
+  .card-content {
+    padding: 12px;
+  }
+
+  .product-title {
+    font-size: 1.05rem;
+  }
+
+  .product-price {
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+  }
+
+  .size-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 0.72rem;
+  }
+
+  .btn-buy {
+    padding: 8px;
+    font-size: 0.82rem;
+  }
+
+  /* Gaveta do Carrinho em ecrã total no telemóvel */
+  .cart-drawer {
+    max-width: 100%;
+    right: -100%;
+  }
+
+  .modal-card {
+    padding: 18px;
+  }
+
+  .size-table th,
+  .size-table td {
+    padding: 6px 4px;
+    font-size: 0.75rem;
+  }
+}

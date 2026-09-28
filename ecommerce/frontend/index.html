@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lumina | Lingerie & Homewear</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/auth.css">
+  
+</head>
+<body>
+  <div class="top-bar">
+    📦 FRETE GRÁTIS EM COMPRAS ACIMA DE R$ 199 | EMBALAGEM TOTALMENTE DISCRETA
+  </div>
+
+  <header>
+  <div class="nav-container">
+    <a href="#" class="brand-logo">LUMINA</a>
+    <div class="nav-actions">
+      <a href="pages/login.html" class="btn-cart" id="btnOpenAuth">👤 Minha Conta</a>
+
+      <button class="btn-cart" onclick="openSizeGuide()">📐 Guia de Medidas</button>
+      <button class="btn-cart" onclick="toggleCart()">
+        🛒 Sacola <span class="cart-badge" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+  <section class="hero">
+    <h1>Elegância & Conforto Diário</h1>
+    <p>Peças desenvolvidas com tecidos nobres, rendas antialérgicas e modelagem anatômica para abraçar suas formas com sofisticação.</p>
+    <div class="privacy-badge">
+      🔒 Envio seguro: Nenhuma menção a lingerie ou conteúdo íntimo na embalagem externa.
+    </div>
+  </section>
+
+  <main class="main-container">
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterProducts('todos')">Todos</button>
+      <button class="filter-btn" onclick="filterProducts('conjuntos')">Conjuntos</button>
+      <button class="filter-btn" onclick="filterProducts('sutias')">Sutiãs</button>
+      <button class="filter-btn" onclick="filterProducts('calcinhas')">Calcinhas</button>
+      <button class="filter-btn" onclick="filterProducts('noite')">Pijamas & Robes</button>
+    </div>
+
+    <div class="product-grid" id="productGrid">
+      <!-- Injetado via JavaScript -->
+    </div>
+  </main>
+
+  <!-- Modal Guia de Medidas -->
+  <div class="modal-overlay" id="sizeGuideModal" onclick="closeSizeGuide(event)">
+    <div class="modal-card">
+      <h3>Guia de Medidas Feminino</h3>
+      <p style="font-size: 0.85rem; color: var(--text-muted);">
+        Para saber seu tamanho correto de sutiã e calcinha, meça com fita métrica sem apertar:
+      </p>
+      <table class="size-table">
+        <thead>
+          <tr>
+            <th>Tamanho</th>
+            <th>Busto (cm)</th>
+            <th>Tórax/Costas (cm)</th>
+            <th>Quadril (cm)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>P (40)</strong></td>
+            <td>84 - 88</td>
+            <td>68 - 72</td>
+            <td>90 - 95</td>
+          </tr>
+          <tr>
+            <td><strong>M (42)</strong></td>
+            <td>89 - 93</td>
+            <td>73 - 77</td>
+            <td>96 - 103</td>
+          </tr>
+          <tr>
+            <td><strong>G (44)</strong></td>
+            <td>94 - 98</td>
+            <td>78 - 82</td>
+            <td>104 - 111</td>
+          </tr>
+          <tr>
+            <td><strong>GG (46)</strong></td>
+            <td>99 - 104</td>
+            <td>83 - 87</td>
+            <td>112 - 120</td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="btn-buy" style="margin-top: 18px;" onclick="document.getElementById('sizeGuideModal').style.display='none'">Fechar Guia</button>
+    </div>
+  </div>
+
+  <!-- Carrinho Lateral -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h3>Sua Sacola</h3>
+      <button class="btn-close-cart" onclick="toggleCart()">&times;</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <!-- Itens do Carrinho -->
+    </div>
+    <div class="cart-footer">
+      <div class="cart-subtotal">
+        <span>Subtotal</span>
+        <span id="cartTotal">R$ 0,00</span>
+      </div>
+
+      <a href="pages/checkout.html" class="btn-checkout" style="display: block; text-align: center; text-decoration: none;">
+    Finalizar Compra
+      </a>
+
+      <div class="discreet-notice">
+        🔒 Pacote lacrado sem identificação visual externa de conteúdo íntimo.
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/app.js"></script>
+
+  <!-- Modal de Autenticação (Login / Cadastro) -->
+<div id="authModal" class="modal-auth-overlay" style="display: none;">
+  <div class="modal-auth-card">
+    <button class="modal-close-btn" id="closeAuthModal">&times;</button>
+    
+    <!-- Cabeçalho de Abas -->
+    <div class="auth-tabs">
+      <button class="tab-btn active" id="tabLoginBtn">Iniciar Sessão</button>
+      <button class="tab-btn" id="tabRegisterBtn">Criar Conta</button>
+    </div>
+
+    <!-- Formulário de Login -->
+    <form id="loginForm" class="auth-form active">
+      <div class="input-group">
+        <label for="loginEmail">E-mail</label>
+        <input type="email" id="loginEmail" placeholder="exemplo@dominio.com" required>
+        <span class="field-error" id="loginEmailError"></span>
+      </div>
+
+      <div class="input-group">
+        <label for="loginPassword">Senha</label>
+        <input type="password" id="loginPassword" placeholder="A sua senha" required>
+      </div>
+
+      <button type="submit" class="auth-submit-btn" id="btnLoginSubmit">Entrar</button>
+    </form>
+
+    <!-- Formulário de Cadastro -->
+    <form id="registerForm" class="auth-form" style="display: none;">
+      <div class="input-group">
+        <label for="regName">Nome Completo</label>
+        <input type="text" id="regName" placeholder="Seu nome" required>
+      </div>
+
+      <div class="input-group">
+        <label for="regEmail">E-mail</label>
+        <input type="email" id="regEmail" placeholder="exemplo@dominio.com" required>
+        <span class="field-error" id="regEmailError"></span>
+      </div>
+
+      <div class="input-group">
+        <label for="regPassword">Senha Forte</label>
+        <input type="password" id="regPassword" placeholder="Mínimo 8 carateres" required>
+        
+        <!-- Indicador Dinâmico de Força de Senha -->
+        <div class="strength-meter">
+          <div class="strength-bar" id="strengthBar"></div>
+        </div>
+        <p class="strength-text" id="strengthText">Segurança da senha</p>
+
+        <!-- Lista de Validações em Tempo Real -->
+        <ul class="password-checklist">
+          <li id="rule-len">✖ Mínimo de 8 caracteres</li>
+          <li id="rule-upper">✖ Pelo menos 1 letra maiúscula</li>
+          <li id="rule-lower">✖ Pelo menos 1 letra minúscula</li>
+          <li id="rule-num">✖ Pelo menos 1 número</li>
+          <li id="rule-spec">✖ Pelo menos 1 caractere especial (@$!%*?&#)</li>
+        </ul>
+      </div>
+
+      <button type="submit" class="auth-submit-btn" id="btnRegisterSubmit" disabled>Criar Conta</button>
+    </form>
+  </div>
+</div>
+
+
+  <footer style="background: var(--bg-white); border-top: 1px solid var(--border-color); padding: 50px 24px 30px; margin-top: 60px;">
+    <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; margin-bottom: 40px;">
+      
+      <!-- Sobre a Marca -->
+      <div>
+        <h4 style="font-family: var(--font-serif); font-size: 1.3rem; margin-bottom: 12px; color: var(--primary);">LUMINA LINGERIE</h4>
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+          Elegância, conforto diário e discrição absoluta desde o atendimento até à entrega na sua porta.
+        </p>
+      </div>
+
+      <!-- Atendimento e Ajuda -->
+      <div>
+        <h4 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Ajuda & Suporte</h4>
+        <ul style="list-style: none; padding: 0; font-size: 0.88rem; line-height: 2;">
+          <li><a href="pages/trocas.html" style="color: var(--text-muted); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">Políticas de Trocas e Devoluções</a></li>
+          <li><a href="#" onclick="openSizeGuide(); return false;" style="color: var(--text-muted); text-decoration: none;">Guia de Tamanhos</a></li>
+          <li><a href="pages/checkout.html" style="color: var(--text-muted); text-decoration: none;">Acompanhar Pedido / Checkout</a></li>
+        </ul>
+      </div>
+
+      <!-- Segurança e Privacidade -->
+      <div>
+        <h4 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Privacidade e Envio</h4>
+        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+          🔒 <strong>Embalagem 100% Neutra:</strong> Sem logótipos provocatórios ou descrições explícitas na etiqueta exterior da transportadora.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Direitos de Autor e Registo -->
+    <div style="text-align: center; border-top: 1px solid var(--border-color); padding-top: 20px; font-size: 0.78rem; color: var(--text-muted);">
+      © 2026 Lumina Lingerie. Todos os direitos reservados. CNPJ: 00.000.000/0001-00
+    </div>
+  </footer>
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

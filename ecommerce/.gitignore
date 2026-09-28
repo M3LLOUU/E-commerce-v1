@@ -1,0 +1,23 @@
+# 1. SEGREDOS E VARIÁVEIS DE AMBIENTE
+.env
+.env.*
+*.env
+*.key
+*.pem
+
+# 2. JAVA / MAVEN / SPRING BOOT
+# Ignora a pasta de compilação inteira visível na raiz (target/)
+target/
+*.class
+*.jar
+*.war
+*.nar
+*.ear
+
+# Logs de execução
+*.log
+logs/
+
+
+# 3. PASTAS E ARQUIVOS DE CONFIGURAÇÃO DE IDES
+.vscode/

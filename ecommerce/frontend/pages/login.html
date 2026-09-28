@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Minha Conta | Lumina</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="../assets/css/auth.css">
+</head>
+<body class="auth-page-body">
+
+  <header>
+    <div class="nav-container">
+      <a href="../index.html" class="brand-logo">LUMINA</a>
+      <div class="nav-actions">
+        <a href="../index.html" class="btn-cart">← Voltar à Loja</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="auth-container">
+    <div class="modal-auth-card auth-page-card">
+      
+      <!-- Cabeçalho de Abas -->
+      <div class="auth-tabs">
+        <button class="tab-btn active" id="tabLoginBtn" type="button">Iniciar Sessão</button>
+        <button class="tab-btn" id="tabRegisterBtn" type="button">Criar Conta</button>
+      </div>
+
+      <!-- Formulário de Início de Sessão -->
+      <form id="loginForm" class="auth-form active">
+        <div class="input-group">
+          <label for="loginEmail">E-mail</label>
+          <input type="email" id="loginEmail" placeholder="exemplo@dominio.com" required autocomplete="email">
+          <span class="field-error" id="loginEmailError"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="loginPassword">Senha</label>
+          <input type="password" id="loginPassword" placeholder="A sua senha" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" class="auth-submit-btn" id="btnLoginSubmit">Entrar</button>
+      </form>
+
+      <!-- Formulário de Registo -->
+      <form id="registerForm" class="auth-form" style="display: none;">
+        <div class="input-group">
+          <label for="regName">Nome Completo</label>
+          <input type="text" id="regName" placeholder="Seu nome" required autocomplete="name">
+        </div>
+
+        <div class="input-group">
+          <label for="regEmail">E-mail</label>
+          <input type="email" id="regEmail" placeholder="exemplo@dominio.com" required autocomplete="email">
+          <span class="field-error" id="regEmailError"></span>
+        </div>
+
+        <div class="input-group">
+          <label for="regPassword">Senha Forte</label>
+          <input type="password" id="regPassword" placeholder="Mínimo 8 carateres" required autocomplete="new-password">
+          
+          <!-- Indicador Dinâmico de Força de Senha -->
+          <div class="strength-meter">
+            <div class="strength-bar" id="strengthBar"></div>
+          </div>
+          <p class="strength-text" id="strengthText">Segurança da senha</p>
+
+          <!-- Lista de Validações em Tempo Real -->
+          <ul class="password-checklist">
+            <li id="rule-len">✖ Mínimo de 8 caracteres</li>
+            <li id="rule-upper">✖ Pelo menos 1 letra maiúscula</li>
+            <li id="rule-lower">✖ Pelo menos 1 letra minúscula</li>
+            <li id="rule-num">✖ Pelo menos 1 número</li>
+            <li id="rule-spec">✖ Pelo menos 1 caractere especial (@$!%*?&#)</li>
+          </ul>
+        </div>
+
+        <button type="submit" class="auth-submit-btn" id="btnRegisterSubmit" disabled>Criar Conta</button>
+      </form>
+
+    </div>
+  </main>
+
+  <script type="module">
+    import { validateEmail, checkPasswordStrength, registerUser, loginUser, setAuthSession } from '../assets/js/auth.js';
+
+    const tabLogin = document.getElementById('tabLoginBtn');
+    const tabRegister = document.getElementById('tabRegisterBtn');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+
+    // Alternar abas
+    tabLogin.addEventListener('click', () => {
+      tabLogin.classList.add('active');
+      tabRegister.classList.remove('active');
+      loginForm.style.display = 'block';
+      registerForm.style.display = 'none';
+    });
+
+    tabRegister.addEventListener('click', () => {
+      tabRegister.classList.add('active');
+      tabLogin.classList.remove('active');
+      registerForm.style.display = 'block';
+      loginForm.style.display = 'none';
+    });
+
+    // Validação de senha forte em tempo real no registo
+    const regPasswordInput = document.getElementById('regPassword');
+    const strengthBar = document.getElementById('strengthBar');
+    const strengthText = document.getElementById('strengthText');
+    const btnRegister = document.getElementById('btnRegisterSubmit');
+
+    regPasswordInput.addEventListener('input', (e) => {
+      const pwd = e.target.value;
+      const { requirements, isStrong, score } = checkPasswordStrength(pwd);
+
+      const updateRule = (id, valid, text) => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.className = valid ? 'valid' : '';
+          el.textContent = `${valid ? '✔' : '✖'} ${text}`;
+        }
+      };
+
+      updateRule('rule-len', requirements.length, 'Mínimo de 8 caracteres');
+      updateRule('rule-upper', requirements.uppercase, 'Pelo menos 1 letra maiúscula');
+      updateRule('rule-lower', requirements.lowercase, 'Pelo menos 1 letra minúscula');
+      updateRule('rule-num', requirements.number, 'Pelo menos 1 número');
+      updateRule('rule-spec', requirements.specialChar, 'Pelo menos 1 caractere especial (@$!%*?&#)');
+
+      const colors = ['#e53935', '#fb8c00', '#fdd835', '#43a047', '#2e7d32'];
+      const labels = ['Muito Fraca', 'Fraca', 'Média', 'Boa', 'Excelente'];
+      strengthBar.style.width = `${(score / 5) * 100}%`;
+      strengthBar.style.backgroundColor = colors[Math.max(0, score - 1)] || '#eee';
+      strengthText.textContent = pwd.length > 0 ? labels[Math.max(0, score - 1)] : 'Segurança da senha';
+
+      btnRegister.disabled = !isStrong;
+    });
+
+    // Submissão do Registo
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fullName = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = regPasswordInput.value;
+      const emailError = document.getElementById('regEmailError');
+
+      emailError.textContent = '';
+
+      if (!validateEmail(email)) {
+        emailError.textContent = 'Insira um e-mail válido (ex: nome@dominio.com).';
+        return;
+      }
+
+      try {
+        btnRegister.disabled = true;
+        btnRegister.textContent = 'A criar conta...';
+        const user = await registerUser({ fullName, email, password });
+        setAuthSession(user);
+        alert('Conta criada com sucesso!');
+        window.location.href = '../index.html';
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        btnRegister.disabled = false;
+        btnRegister.textContent = 'Criar Conta';
+      }
+    });
+
+    // Submissão do Início de Sessão
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const emailError = document.getElementById('loginEmailError');
+      const btnLogin = document.getElementById('btnLoginSubmit');
+
+      emailError.textContent = '';
+
+      if (!validateEmail(email)) {
+        emailError.textContent = 'E-mail com formato inválido.';
+        return;
+      }
+
+      try {
+        btnLogin.disabled = true;
+        btnLogin.textContent = 'A entrar...';
+        const user = await loginUser({ email, password });
+        setAuthSession(user);
+        alert(`Bem-vinda(o) de volta, ${user.fullName}!`);
+        window.location.href = '../index.html';
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        btnLogin.disabled = false;
+        btnLogin.textContent = 'Entrar';
+      }
+    });
+  </script>
+</body>
+</html>
